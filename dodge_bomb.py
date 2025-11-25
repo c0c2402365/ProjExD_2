@@ -18,7 +18,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     """
     引数：こうかとんRectまたは爆弾Rect
     戻り値：判定結果タプル（横方向，縦方向）
-    画面内ならTrue，画面外ならFalse
+    画面内ならTrue,画面外ならFalse
     """
     yoko, tate = True, True
     if rct.left < 0 or WIDTH <rct.right:  # 横方向のはみ出しチェック
@@ -26,6 +26,60 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     if rct.top < 0 or HEIGHT < rct.bottom:  # 縦方向のはみ出しチェック
         tate = False
     return yoko, tate
+
+
+def gameover(screen: pg.Surface) -> None:
+    """ゲームオーバーを表示する関数"""
+
+    kk_img2 = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0)
+    kk_img2 = pg.image.load("fig/8.png")
+    kk_img2 = pg.transform.flip(kk_img2, True, False)
+    kk_img2 = pg.transform.rotozoom(kk_img2, 10, 1.0)
+    kk_rct2 = kk_img2.get_rect()
+    kk_rct2.center = 360, 310
+    screen.blit(kk_img2, kk_rct2) 
+
+    kk_img2 = pg.image.load("fig/8.png")
+    kk_img2 = pg.transform.flip(kk_img2, True, False)
+    kk_img2 = pg.transform.rotozoom(kk_img2, 10, 1.0)
+    kk_rct2 = kk_img2.get_rect()
+    kk_rct2.center = WIDTH-360, HEIGHT-335
+    screen.blit(kk_img2, kk_rct2) 
+
+
+    Back_grand_img = pg.Surface((1100, 650))
+    pg.draw.rect(Back_grand_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
+    Back_grand_img.set_alpha(200)  # 透明度設定
+    # Back_grand_img.draw.rect(kk_img2, (0, 0, 0), (10, 10), 10)
+
+    screen.blit(Back_grand_img, [0, 0])
+    
+
+    fonto = pg.font.Font(None, 80)
+    txt = fonto.render("GAME OVER",True, (255, 255, 255))
+
+    text_rct = txt.get_rect()
+    text_rct.center = WIDTH // 2, HEIGHT // 2
+    
+    screen.blit(txt,text_rct,)
+    pg.display.update()
+    pg.time.wait(5000)
+
+def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+    """爆弾画像リストとその半径リストを初期化する関数"""
+    bb_imgs = []
+    bb_rs = []
+    for r in range(10, 50, 10):
+        bb_img = pg.Surface((2*r, 2*r))  # 空のSurface
+        pg.draw.circle(bb_img, (255, 0, 0), (r, r), r)  # 半径rの赤い円を描画
+        bb_img.set_colorkey((0, 0, 0))  # 黒色を透過色に設定
+        bb_imgs.append(bb_img)
+        bb_rs.append(r)
+    return bb_imgs, bb_rs   
+
+
+
+
 
 
 def main():
@@ -79,8 +133,14 @@ def main():
         if not tate:  # 縦方向にはみ出ていたら
             vy *= -1
         bb_rct.move_ip(vx, vy)
+
+
         screen.blit(bb_img, bb_rct)
+        
+
+        gameover(screen) if kk_rct.colliderect(bb_rct) else None
         pg.display.update()
+        
         tmr += 1
         clock.tick(50)
 
