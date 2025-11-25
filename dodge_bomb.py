@@ -1,5 +1,6 @@
 import os
 import random 
+import time
 import sys
 import pygame as pg
 
@@ -36,7 +37,7 @@ def gameover(screen: pg.Surface) -> None:
     kk_img2 = pg.transform.flip(kk_img2, True, False)
     kk_img2 = pg.transform.rotozoom(kk_img2, 10, 1.0)
     kk_rct2 = kk_img2.get_rect()
-    kk_rct2.center = 360, 310
+    kk_rct2.center = 360, 310  # こうかとんの位置指定
     screen.blit(kk_img2, kk_rct2) 
 
     kk_img2 = pg.image.load("fig/8.png")
@@ -48,7 +49,7 @@ def gameover(screen: pg.Surface) -> None:
 
 
     Back_grand_img = pg.Surface((1100, 650))
-    pg.draw.rect(Back_grand_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
+    pg.draw.rect(Back_grand_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))  # 黒い四角を描画
     Back_grand_img.set_alpha(200)  # 透明度設定
     # Back_grand_img.draw.rect(kk_img2, (0, 0, 0), (10, 10), 10)
 
@@ -65,17 +66,8 @@ def gameover(screen: pg.Surface) -> None:
     pg.display.update()
     pg.time.wait(5000)
 
-def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
-    """爆弾画像リストとその半径リストを初期化する関数"""
-    bb_imgs = []
-    bb_rs = []
-    for r in range(10, 50, 10):
-        bb_img = pg.Surface((2*r, 2*r))  # 空のSurface
-        pg.draw.circle(bb_img, (255, 0, 0), (r, r), r)  # 半径rの赤い円を描画
-        bb_img.set_colorkey((0, 0, 0))  # 黒色を透過色に設定
-        bb_imgs.append(bb_img)
-        bb_rs.append(r)
-    return bb_imgs, bb_rs   
+# def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+
 
 
 
@@ -136,7 +128,7 @@ def main():
 
 
         screen.blit(bb_img, bb_rct)
-        
+
 
         gameover(screen) if kk_rct.colliderect(bb_rct) else None
         pg.display.update()
