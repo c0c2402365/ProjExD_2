@@ -32,7 +32,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
 def gameover(screen: pg.Surface) -> None:
     """ゲームオーバーを表示する関数"""
 
-    kk_img2 = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0)
+    kk_img2 = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0)  # こうかとん画像読み込み
     kk_img2 = pg.image.load("fig/8.png")
     kk_img2 = pg.transform.flip(kk_img2, True, False)
     kk_img2 = pg.transform.rotozoom(kk_img2, 10, 1.0)
