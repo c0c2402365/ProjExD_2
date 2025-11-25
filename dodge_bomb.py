@@ -47,7 +47,6 @@ def gameover(screen: pg.Surface) -> None:
     kk_rct2.center = WIDTH-360, HEIGHT-335
     screen.blit(kk_img2, kk_rct2) 
 
-
     Back_grand_img = pg.Surface((1100, 650))
     pg.draw.rect(Back_grand_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))  # 黒い四角を描画
     Back_grand_img.set_alpha(200)  # 透明度設定
